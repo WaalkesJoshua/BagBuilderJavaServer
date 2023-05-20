@@ -11,11 +11,9 @@ import java.util.List;
 @Component
 public class BagService {
 
-    @Autowired
-    private DiscService discService;
-
     private static List<Bag> bags = new ArrayList<>();
     private static Long bagCount = 0L;
+
 
     static {
         bags.add(new Bag(++bagCount, 1L,1, "CasualBag", "For casual rounds"));
@@ -24,9 +22,10 @@ public class BagService {
         bags.add(new Bag(++bagCount, 3L, 1, "BestBag", "For slaying it"));
     }
 
-    public List<Bag> getAllBags() {
-       return bags;
-    }
+    ////There is no real use case for this///
+//    public List<Bag> getAllBags() {
+//       return bags;
+//    }
 
     public Bag getBagById(Long id) {
         Bag foundBag = null;
@@ -48,12 +47,12 @@ public class BagService {
         return userBags;
     }
 
-    //need new method to create  new bag
-    public Bag createNewBag(Long userId, String name, String description) {
-        int bagNumber = getAllUserBags(userId).size() + 1;
-        Bag createdBag = new Bag(++bagCount, userId, bagNumber, name, description);
-        bags.add( createdBag );
-        return createdBag;
+    public Bag createNewBag(Bag bag) {
+        int bagNumber = getAllUserBags(bag.getUserId()).size() + 1;
+        bag.setId(++bagCount);
+        bag.setBagNumber(bagNumber);
+        bags.add(bag);
+        return bag;
     }
 
     //method to delete bag
@@ -66,7 +65,8 @@ public class BagService {
         return bagToRemove;
     }
 
-    //get discs from bag  ---- I opt to just select all instead of by id or name, because front end will likely never use that feature.
+    //get discs from bag  ---- I opt to just select all instead of by id or name,
+    // because front end will likely never use that feature.
     public List<Disc> getDiscsFromBag(Long id) {
         Bag currentBag = getBagById(id);
         if (currentBag == null) {
@@ -75,31 +75,39 @@ public class BagService {
         return currentBag.getDiscs();
     }
 
-    //need method to add disc to bag
-    public List<Disc> addDiscToBag(int discId, Long bagId) {
+    public Disc addDiscToBagById(Disc disc, Long bagId) {
         Bag currentBag = getBagById(bagId);
-        Disc discToAdd = discService.findOne(discId);
-        if (currentBag == null || discToAdd == null) {
+        if (currentBag == null ) {
             return null;
         }
         List<Disc> currentDiscs = getDiscsFromBag(bagId);
-        currentDiscs.add(discToAdd);
+        currentDiscs.add(disc);
         currentBag.setDiscs(currentDiscs);
 
-        return currentDiscs;
+        return disc;
     }
 
-    //need method to remove disc from bag
-    public List<Disc> removeDiscfromBag(int discId, Long bagId) {
+    public Disc removeDiscfromBagById(Disc disc, Long bagId) {
         Bag currentBag = getBagById(bagId);
-        Disc discToRemove = discService.findOne(discId);
-        if (currentBag == null || discToRemove == null) {
+        if (currentBag == null ) {
             return null;
         }
         List<Disc> currentDiscs = getDiscsFromBag(bagId);
-        currentDiscs.remove(discToRemove);
+        currentDiscs.remove(disc);
         currentBag.setDiscs(currentDiscs);
 
-        return currentDiscs;
+        return disc;
+    }
+
+    public Bag modifyBag(Bag bag) {
+        Bag updatedBag = getBagById(bag.getId());
+        if (updatedBag == null) {
+            return null;
+        }
+        updatedBag.setBagNumber(bag.getBagNumber());
+        updatedBag.setName(bag.getName());
+        updatedBag.setDescription(bag.getName());
+
+        return updatedBag;
     }
 }

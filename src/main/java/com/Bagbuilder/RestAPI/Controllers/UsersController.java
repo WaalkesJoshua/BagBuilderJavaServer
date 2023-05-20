@@ -49,7 +49,7 @@ public class UsersController {
 
     //route to update user
     @RequestMapping(method=RequestMethod.PUT, path="/update")
-    public User updateUserById(@RequestBody User user) {
+    public User updateUser(@RequestBody User user) {
         User updatedUser = userService.modifyUser(user);
         if (updatedUser == null) {
             throw new UserNotFoundException("Id: " + user.getId());
