@@ -1,10 +1,12 @@
 package com.Bagbuilder.RestAPI.Services;
 
 import com.Bagbuilder.RestAPI.Models.User;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class UserService {
 
     public static List<User> users = new ArrayList<>();
@@ -30,10 +32,27 @@ public class UserService {
         return foundUser;
     }
 
+    //create new user
+    public User addUser(User user) {
+        user.setId(userCount++);
+        users.add(user);
+        return user;
+    }
+
+    public User deleteUser(Long id) {
+        User user = findOne(id);
+        if (user == null){
+            return null;
+        }
+        users.remove(user); // later this will translate to remove user from db
+
+        return user;
+    }
+
     public User modifyUser(User modUser) {
         User user = findOne(modUser.getId());
         if (user == null){
-            return user;
+            return null;
         }
         user.setLastName(modUser.getLastName());        ////////
         user.setFirstName(modUser.getFirstName());      // Later this will translate to update value in db
@@ -41,20 +60,4 @@ public class UserService {
 
         return user;
     }
-
-    public User deleteUser(User userToBeDeleted) {
-        User user = findOne(userToBeDeleted.getId());
-        if (user == null){
-            return user;
-        }
-        users.remove(user); // later this will translate to remove user from db
-
-        return user;
-    }
-
-    //need new route to create  new bag
-
-    //need route to add disc to bag
-
-    //need route to remove disc from bag
 }

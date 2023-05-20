@@ -5,15 +5,16 @@ import java.util.List;
 
 public class Bag {
     private Long id;
+    private Long userId;
     private int bagNumber;
     private String name;
     private String description;
-    private Integer discCount = 0;
     private List<Disc> discs = new ArrayList<>();
 
 
-    public Bag(Long id, int bagNumber, String name, String description) {
+    public Bag(Long id, Long userId, int bagNumber, String name, String description) {
         this.id = id;
+        this.userId = userId;
         this.bagNumber = bagNumber;
         this.name = name;
         this.description = description;
@@ -25,6 +26,14 @@ public class Bag {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public int getBagNumber() {
@@ -51,13 +60,6 @@ public class Bag {
         this.description = description;
     }
 
-    public Integer getDiscCount() {
-        return discCount;
-    }
-
-    public void setDiscCount(Integer discCount) {
-        this.discCount = discCount;
-    }
 
     public List<Disc> getDiscs() {
         return discs;
@@ -74,7 +76,6 @@ public class Bag {
                 ", bagNumber=" + bagNumber +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
-                ", discCount=" + discCount +
                 '}';
     }
 }
