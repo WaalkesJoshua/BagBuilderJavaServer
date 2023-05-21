@@ -1,9 +1,14 @@
 package com.Bagbuilder.RestAPI.Controllers;
 
+import com.Bagbuilder.RestAPI.Exceptions.BagNotFoundException;
+import com.Bagbuilder.RestAPI.Exceptions.DiscNotFoundException;
+import com.Bagbuilder.RestAPI.Exceptions.UserNotFoundException;
 import com.Bagbuilder.RestAPI.Models.Bag;
 import com.Bagbuilder.RestAPI.Models.Disc;
+import com.Bagbuilder.RestAPI.Models.User;
 import com.Bagbuilder.RestAPI.Services.BagService;
 import com.Bagbuilder.RestAPI.Services.DiscService;
+import com.Bagbuilder.RestAPI.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,70 +24,86 @@ public class BagsController {
     @Autowired
     private DiscService discService;
 
-    public BagsController(BagService bagService, DiscService discService) {
+    @Autowired
+    private UserService userService;
+
+    public BagsController(BagService bagService, DiscService discService, UserService userService) {
         this.bagService = bagService;
         this.discService = discService;
+        this.userService = userService;
     }
 
-    //get all bags for user
     @GetMapping(path="/userId/{id}")
     public List<Bag> getUsersBags(@PathVariable Long userId) {
-
-        //Fill in logic
-        //Don't Forget UserNotFoundException
-
+        User foundUser = userService.findOne(userId);
+        if (foundUser == null) {
+            throw new UserNotFoundException("Id: " + userId);
+        }
+        return bagService.getAllUserBags(userId);
     }
 
-    //getBagById
     @GetMapping(path="/{id}")
     public Bag getBagById(@PathVariable Long id) {
-
-        //Fill in logic
-        //Since this is the first route that needs bag id, stop here and create BagNotFoundException
+        Bag foundBag = bagService.getBagById(id);
+        if (foundBag == null) {
+            throw new BagNotFoundException("Id: " + id);
+        }
+        return foundBag;
     }
 
-    //createBag
     @PostMapping(path="/add")
     public Bag createBag(@RequestBody Bag bag) {
-
-        //Fill in logic
-
+        return bagService.createNewBag(bag);
     }
 
 
-    //deleteBagById
     @RequestMapping(method=RequestMethod.DELETE, path="/delete/{id}")
     public Bag deleteBagById(@PathVariable Long id) {
-
-        //Fill in logic
-
+        Bag deletedBag = bagService.deleteBagById(id);
+        if (deletedBag == null) {
+            throw new BagNotFoundException("Id: " + id);
+        }
+        return deletedBag;
     }
 
 
-    //addDiscToBagById
     @PostMapping(path="/{id}/addDisc")
     public Disc addDiscToBagById(@PathVariable Long id, @RequestBody Disc disc) {
+        Disc addedDisc = discService.findOne(disc.getId());
+        if (addedDisc == null) {
+            throw new DiscNotFoundException("Id: " + disc.getId());
+        }
+        Bag currentBag = bagService.getBagById(id);
+        if (currentBag == null) {
+            throw new BagNotFoundException("Id: " + id);
+        }
+        bagService.addDiscToBagById(id, disc);
 
-        //Fill in logic
-        //use discService to validate disc and if invalid throw disc exception
-
+        return addedDisc;
     }
 
-    //removeDiscFromBagById
     @PostMapping(path="/{id}/removeDisc")
     public Disc removeDiscFromBagById(@PathVariable Long id, @RequestBody Disc disc) {
+        Disc removedDisc = discService.findOne(disc.getId());
+        if (removedDisc == null) {
+            throw new DiscNotFoundException("Id: " + disc.getId());
+        }
+        Bag currentBag = bagService.getBagById(id);
+        if (currentBag == null) {
+            throw new BagNotFoundException("Id: " + id);
+        }
+        bagService.removeDiscfromBagById(id, disc);
 
-        //Fill in logic
-        //use discService to validate disc and if invalid throw disc exception
-
+        return removedDisc;
     }
 
-    //updateBag
     @RequestMapping(method=RequestMethod.PUT, path="/update")
     public Bag updateBag(@RequestBody Bag bag) {
-
-        //Fill in logic
-
+        Bag updatedbag = bagService.modifyBag(bag);
+        if (updatedbag == null) {
+            throw new BagNotFoundException("Id: " + bag.getId());
+        }
+        return updatedbag;
     }
 
 }

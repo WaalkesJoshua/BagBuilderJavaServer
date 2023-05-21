@@ -75,28 +75,18 @@ public class BagService {
         return currentBag.getDiscs();
     }
 
-    public Disc addDiscToBagById(Disc disc, Long bagId) {
+    public void addDiscToBagById(Long bagId, Disc disc) {
         Bag currentBag = getBagById(bagId);
-        if (currentBag == null ) {
-            return null;
-        }
         List<Disc> currentDiscs = getDiscsFromBag(bagId);
         currentDiscs.add(disc);
         currentBag.setDiscs(currentDiscs);
-
-        return disc;
     }
 
-    public Disc removeDiscfromBagById(Disc disc, Long bagId) {
+    public void removeDiscfromBagById(Long bagId, Disc disc) {
         Bag currentBag = getBagById(bagId);
-        if (currentBag == null ) {
-            return null;
-        }
         List<Disc> currentDiscs = getDiscsFromBag(bagId);
         currentDiscs.remove(disc);
         currentBag.setDiscs(currentDiscs);
-
-        return disc;
     }
 
     public Bag modifyBag(Bag bag) {
@@ -106,7 +96,7 @@ public class BagService {
         }
         updatedBag.setBagNumber(bag.getBagNumber());
         updatedBag.setName(bag.getName());
-        updatedBag.setDescription(bag.getName());
+        updatedBag.setDescription(bag.getDescription());
 
         return updatedBag;
     }
