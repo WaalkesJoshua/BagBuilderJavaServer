@@ -1,7 +1,9 @@
 package com.Bagbuilder.RestAPI.Controllers;
 
 import com.Bagbuilder.RestAPI.Exceptions.UserNotFoundException;
+import com.Bagbuilder.RestAPI.Models.Bag;
 import com.Bagbuilder.RestAPI.Models.User;
+import com.Bagbuilder.RestAPI.Services.BagService;
 import com.Bagbuilder.RestAPI.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -15,21 +17,32 @@ public class UsersController {
     @Autowired
     private UserService userService;
 
-    public UsersController(UserService userService) {
+    @Autowired
+    private BagService bagService;
+
+    public UsersController(UserService userService, BagService bagService) {
         this.userService = userService;
+        this.bagService = bagService;
     }
 
     @GetMapping(path="")
     public List<User> getAllUsers() {
-        return userService.findAll();
+        List<User> allUsers = userService.findAll();
+        for (User user: allUsers) {
+            List<Bag> userBags = bagService.getAllUserBags(user.getId());
+            user.setBags(userBags);
+        }
+        return allUsers;
     }
 
     @GetMapping(path="/{id}")
     public User getUserById(@PathVariable Long id) {
+        List<Bag> userBags = bagService.getAllUserBags(id);
         User foundUser = userService.findOne(id);
         if (foundUser == null) {
             throw new UserNotFoundException("Id: " + id);
         }
+        foundUser.setBags(userBags);
         return foundUser;
     }
 

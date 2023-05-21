@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Component
 public class BagService {
@@ -30,7 +31,7 @@ public class BagService {
     public Bag getBagById(Long id) {
         Bag foundBag = null;
         for (Bag bag : bags) {
-            if (bag.getId() == id) {
+            if (Objects.equals(bag.getId(), id)) {
                 foundBag = bag;
             }
         }

@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping(path="/bags")
@@ -33,7 +34,7 @@ public class BagsController {
         this.userService = userService;
     }
 
-    @GetMapping(path="/userId/{id}")
+    @GetMapping(path="/userId/{userId}")
     public List<Bag> getUsersBags(@PathVariable Long userId) {
         User foundUser = userService.findOne(userId);
         if (foundUser == null) {
@@ -69,15 +70,16 @@ public class BagsController {
 
     @PostMapping(path="/{id}/addDisc")
     public Disc addDiscToBagById(@PathVariable Long id, @RequestBody Disc disc) {
-        Disc addedDisc = discService.findOne(disc.getId());
+        int discId = disc.getId();
+        Disc addedDisc = discService.findOne(discId);
         if (addedDisc == null) {
-            throw new DiscNotFoundException("Id: " + disc.getId());
+            throw new DiscNotFoundException("Id: " + discId);
         }
         Bag currentBag = bagService.getBagById(id);
         if (currentBag == null) {
             throw new BagNotFoundException("Id: " + id);
         }
-        bagService.addDiscToBagById(id, disc);
+        bagService.addDiscToBagById(id, addedDisc);
 
         return addedDisc;
     }

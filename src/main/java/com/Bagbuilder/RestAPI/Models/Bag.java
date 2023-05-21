@@ -18,6 +18,7 @@ public class Bag {
         this.bagNumber = bagNumber;
         this.name = name;
         this.description = description;
+        this.discs = discs;
     }
 
     public Long getId() {

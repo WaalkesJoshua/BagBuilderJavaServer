@@ -20,7 +20,7 @@ public class DiscsController {
     }
 
     //create a getAllDiscs route
-    @GetMapping(path="/all")
+    @GetMapping(path="")
     public List<Disc> getAllDiscs() {
         return discService.findAll();
     }

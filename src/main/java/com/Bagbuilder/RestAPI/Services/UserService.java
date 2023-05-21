@@ -10,7 +10,7 @@ import java.util.List;
 public class UserService {
 
     public static List<User> users = new ArrayList<>();
-    private static Long userCount = 0L;
+    private static Long userCount = 1L;
 
     static {
         users.add(new User(userCount++, "Josh", "Waalkes", "Intermediate"));
