@@ -3,71 +3,73 @@ package com.Bagbuilder.RestAPI.Controllers;
 import com.Bagbuilder.RestAPI.Exceptions.UserNotFoundException;
 import com.Bagbuilder.RestAPI.Models.Bag;
 import com.Bagbuilder.RestAPI.Models.User;
+import com.Bagbuilder.RestAPI.Repositories.BagRepository;
+import com.Bagbuilder.RestAPI.Repositories.UserRepository;
 import com.Bagbuilder.RestAPI.Services.BagService;
-import com.Bagbuilder.RestAPI.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(path="/users")
 public class UsersController {
 
-    @Autowired
-    private UserService userService;
+//    @Autowired
+//    private userRepository userRepository;
+//
+//    @Autowired
+//    private BagService bagService;
 
     @Autowired
-    private BagService bagService;
+    private UserRepository userRepository;
 
-    public UsersController(UserService userService, BagService bagService) {
-        this.userService = userService;
-        this.bagService = bagService;
+    @Autowired
+    private BagRepository bagRepository;
+
+    public UsersController(UserRepository userRepository, BagRepository bagRepository) {
+        this.userRepository = userRepository;
+        this.bagRepository = bagRepository;
     }
 
-//    @GetMapping(path="")
-//    public List<User> getAllUsers() {
-//        List<User> allUsers = userService.findAll();
-//        for (User user: allUsers) {
-//            List<Bag> userBags = bagService.getAllUserBags(user.getId());
-//            user.setBags(userBags);
-//        }
-//        return allUsers;
-//    }
+    @GetMapping(path="")
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
 
-//    @GetMapping(path="/{id}")
-//    public User getUserById(@PathVariable Long id) {
-//        List<Bag> userBags = bagService.getAllUserBags(id);
-//        User foundUser = userService.findOne(id);
-//        if (foundUser == null) {
-//            throw new UserNotFoundException("Id: " + id);
-//        }
-//        foundUser.setBags(userBags);
-//        return foundUser;
-//    }
+    @GetMapping(path="/{id}")
+    public Optional<User> getUserById(@PathVariable Long id) {
+      Optional<User> foundUser = userRepository.findById(id);
+      if (foundUser.isEmpty()) {
+          throw new UserNotFoundException("No user found for id: " + id);
+      }
+      return foundUser;
+    }
 
     @PostMapping(path="/add")
     public User addUser(@RequestBody User user) {
-        return userService.addUser(user);
+        return userRepository.saveAndFlush(user);
     }
 
-    @RequestMapping(method=RequestMethod.DELETE, path="/delete/{id}")
-    public User deleteUserById(@PathVariable Long id) {
-        User deletedUser = userService.deleteUser(id);
-        if (deletedUser == null) {
-            throw new UserNotFoundException("Id: " + id);
+    @RequestMapping(method={RequestMethod.DELETE}, path="/delete/{id}")
+    public String deleteUserById(@PathVariable Long id) {
+        Optional<User> foundUser = userRepository.findById(id);
+        if(foundUser.isEmpty()) {
+            throw new UserNotFoundException("No user found for id: " + id);
         }
-        return deletedUser;
+        userRepository.deleteById(id);
+        return "User with Id: " + id + " successfully deleted";
     }
 
     //route to update user
     @RequestMapping(method=RequestMethod.PUT, path="/update")
-    public User updateUser(@RequestBody User user) {
-        User updatedUser = userService.modifyUser(user);
-        if (updatedUser == null) {
-            throw new UserNotFoundException("Id: " + user.getId());
+    public String updateUser(@RequestBody User user) {
+        Optional<User> foundUser = userRepository.findById(user.getId());
+        if (foundUser.isEmpty()) {
+            throw new UserNotFoundException("No user found for id: " + user.getId());
         }
-        return updatedUser;
+      userRepository.saveAndFlush(user);
+      return "User with Id: " + user.getId() + " successfully updated";
     }
-
 }

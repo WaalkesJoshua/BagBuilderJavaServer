@@ -6,8 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity(name="bb_users")
-@SequenceGenerator(name = "user_seq", sequenceName = "", initialValue = 50)
+@SequenceGenerator(name = "user_seq", initialValue = 50,  allocationSize = 1)
 public class User {
+
+    public User () {}
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq")
@@ -18,6 +20,7 @@ public class User {
     private String email;
 
     @OneToMany(mappedBy = "user")
+    @OrderBy("bagNumber DESC")
     private List<Bag> bags;
 
     public User(Long id, String firstName, String lastName, String experience, String email) {

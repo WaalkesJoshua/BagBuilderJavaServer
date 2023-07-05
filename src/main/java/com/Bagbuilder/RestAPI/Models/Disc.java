@@ -1,12 +1,15 @@
 package com.Bagbuilder.RestAPI.Models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.List;
 
 @Entity(name="discs")
-@SequenceGenerator(name = "disc_seq", sequenceName = "")
+@SequenceGenerator(name = "disc_seq", allocationSize = 1)
 public class Disc {
+
+    public Disc () {}
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "disc_seq")
@@ -14,19 +17,19 @@ public class Disc {
     private String name;
     private String type;
     private String maker;
-    private int speed;
-    private int glide;
-    private int turn;
-    private int fade;
+    private double speed;
+    private double glide;
+    private double turn;
+    private double fade;
     private String stability;
 
     @ManyToMany(mappedBy = "discs")
+    @JsonIgnore
     private List<Bag> bags;
 
-    public Disc(int id, String name, String type, String maker, int speed, int turn, int fade, int glide) {
+    public Disc(int id, String name, String maker, double speed, double turn, double fade, double glide) {
         this.id = id;
         this.name = name;
-        this.type = type;
         this.maker = maker;
         this.speed = speed;
         this.turn = turn;
@@ -50,6 +53,14 @@ public class Disc {
         return name;
     }
 
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public void setStability(String stability) {
+        this.stability = stability;
+    }
+
     public String getType() {
         return type;
     }
@@ -62,19 +73,19 @@ public class Disc {
         return stability;
     }
 
-    public int getSpeed() {
+    public double getSpeed() {
         return speed;
     }
 
-    public int getGlide() {
+    public double getGlide() {
         return glide;
     }
 
-    public int getTurn() {
+    public double getTurn() {
         return turn;
     }
 
-    public int getFade() {
+    public double getFade() {
         return fade;
     }
 

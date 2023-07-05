@@ -7,8 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity(name="bags")
-@SequenceGenerator(name = "bags_seq", sequenceName = "", initialValue = 50)
+@SequenceGenerator(name = "bags_seq", initialValue = 50, allocationSize = 1)
 public class Bag {
+    public Bag () {}
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "bags_seq")
@@ -22,6 +23,7 @@ public class Bag {
     private User user;
 
     @ManyToMany
+    @OrderBy("speed ASC")
     private List<Disc> discs;
 
 
