@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Objects;
 
 @RestController
 @RequestMapping(path="/bags")
@@ -34,14 +33,14 @@ public class BagsController {
         this.userService = userService;
     }
 
-    @GetMapping(path="/userId/{userId}")
-    public List<Bag> getUsersBags(@PathVariable Long userId) {
-        User foundUser = userService.findOne(userId);
-        if (foundUser == null) {
-            throw new UserNotFoundException("Id: " + userId);
-        }
-        return bagService.getAllUserBags(userId);
-    }
+//    @GetMapping(path="/userId/{userId}")
+//    public List<Bag> getUsersBags(@PathVariable Long userId) {
+//        User foundUser = userService.findOne(userId);
+//        if (foundUser == null) {
+//            throw new UserNotFoundException("Id: " + userId);
+//        }
+//        return bagService.getAllUserBags(userId);
+//    }
 
     @GetMapping(path="/{id}")
     public Bag getBagById(@PathVariable Long id) {
@@ -52,10 +51,10 @@ public class BagsController {
         return foundBag;
     }
 
-    @PostMapping(path="/add")
-    public Bag createBag(@RequestBody Bag bag) {
-        return bagService.createNewBag(bag);
-    }
+//    @PostMapping(path="/add")
+//    public Bag createBag(@RequestBody Bag bag) {
+//        return bagService.createNewBag(bag);
+//    }
 
 
     @RequestMapping(method=RequestMethod.DELETE, path="/delete/{id}")
@@ -94,7 +93,7 @@ public class BagsController {
         if (currentBag == null) {
             throw new BagNotFoundException("Id: " + id);
         }
-        bagService.removeDiscfromBagById(id, disc);
+        bagService.removeDiscfromBagById(id, removedDisc);
 
         return removedDisc;
     }

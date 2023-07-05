@@ -25,26 +25,26 @@ public class UsersController {
         this.bagService = bagService;
     }
 
-    @GetMapping(path="")
-    public List<User> getAllUsers() {
-        List<User> allUsers = userService.findAll();
-        for (User user: allUsers) {
-            List<Bag> userBags = bagService.getAllUserBags(user.getId());
-            user.setBags(userBags);
-        }
-        return allUsers;
-    }
+//    @GetMapping(path="")
+//    public List<User> getAllUsers() {
+//        List<User> allUsers = userService.findAll();
+//        for (User user: allUsers) {
+//            List<Bag> userBags = bagService.getAllUserBags(user.getId());
+//            user.setBags(userBags);
+//        }
+//        return allUsers;
+//    }
 
-    @GetMapping(path="/{id}")
-    public User getUserById(@PathVariable Long id) {
-        List<Bag> userBags = bagService.getAllUserBags(id);
-        User foundUser = userService.findOne(id);
-        if (foundUser == null) {
-            throw new UserNotFoundException("Id: " + id);
-        }
-        foundUser.setBags(userBags);
-        return foundUser;
-    }
+//    @GetMapping(path="/{id}")
+//    public User getUserById(@PathVariable Long id) {
+//        List<Bag> userBags = bagService.getAllUserBags(id);
+//        User foundUser = userService.findOne(id);
+//        if (foundUser == null) {
+//            throw new UserNotFoundException("Id: " + id);
+//        }
+//        foundUser.setBags(userBags);
+//        return foundUser;
+//    }
 
     @PostMapping(path="/add")
     public User addUser(@RequestBody User user) {
