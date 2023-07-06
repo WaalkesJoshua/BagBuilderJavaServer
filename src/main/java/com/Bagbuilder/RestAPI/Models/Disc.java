@@ -27,7 +27,7 @@ public class Disc {
     @JsonIgnore
     private List<Bag> bags;
 
-    public Disc(int id, String name, String maker, double speed, double turn, double fade, double glide) {
+    public Disc(int id, String name, String maker, double speed, double turn, double fade, double glide, String stability, String type) {
         this.id = id;
         this.name = name;
         this.maker = maker;
@@ -35,14 +35,16 @@ public class Disc {
         this.turn = turn;
         this.fade = fade;
         this.glide = glide;
+        this.stability = stability;
+        this.type = type;
 
-        if(turn + fade == 0) {
-            this.stability = "Stable";
-        } else if (turn + fade < 0) {
-            this.stability = "Understable";
-        } else {
-            this.stability = "Overstable";
-        }
+//        if(turn + fade == 0) {
+//            this.stability = "Stable";
+//        } else if (turn + fade < 0) {
+//            this.stability = "Understable";
+//        } else {
+//            this.stability = "Overstable";
+//        }
     }
 
     public int getId() {
@@ -53,13 +55,13 @@ public class Disc {
         return name;
     }
 
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public void setStability(String stability) {
-        this.stability = stability;
-    }
+//    public void setType(String type) {
+//        this.type = type;
+//    }
+//
+//    public void setStability(String stability) {
+//        this.stability = stability;
+//    }
 
     public String getType() {
         return type;
