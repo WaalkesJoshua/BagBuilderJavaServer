@@ -7,6 +7,7 @@ import com.Bagbuilder.RestAPI.Repositories.BagRepository;
 import com.Bagbuilder.RestAPI.Repositories.UserRepository;
 import com.Bagbuilder.RestAPI.Services.BagService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -35,7 +36,8 @@ public class UsersController {
 
     @GetMapping(path="")
     public List<User> getAllUsers() {
-        return userRepository.findAll();
+        Sort sort = Sort.by(Sort.Direction.ASC, "id");
+        return userRepository.findAll(sort);
     }
 
     @GetMapping(path="/{id}")

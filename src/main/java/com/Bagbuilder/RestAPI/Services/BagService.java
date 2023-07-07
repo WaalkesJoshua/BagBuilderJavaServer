@@ -94,7 +94,6 @@ public class BagService {
         if (updatedBag == null) {
             return null;
         }
-        updatedBag.setBagNumber(bag.getBagNumber());
         updatedBag.setName(bag.getName());
         updatedBag.setDescription(bag.getDescription());
 

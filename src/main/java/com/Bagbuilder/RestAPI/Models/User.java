@@ -20,7 +20,7 @@ public class User {
     private String email;
 
     @OneToMany(mappedBy = "user")
-    @OrderBy("bagNumber DESC")
+    @OrderBy("id ASC")
     private List<Bag> bags;
 
     public User(Long id, String firstName, String lastName, String experience, String email) {

@@ -14,7 +14,6 @@ public class Bag {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "bags_seq")
     private Long id;
-    private int bagNumber;
     private String name;
     private String description;
 
@@ -27,9 +26,8 @@ public class Bag {
     private List<Disc> discs;
 
 
-    public Bag(Long id, int bagNumber, String name, String description) {
+    public Bag(Long id, String name, String description) {
         this.id = id;
-        this.bagNumber = bagNumber;
         this.name = name;
         this.description = description;
     }
@@ -46,12 +44,8 @@ public class Bag {
         return user;
     }
 
-    public int getBagNumber() {
-        return bagNumber;
-    }
-
-    public void setBagNumber(int bagNumber) {
-        this.bagNumber = bagNumber;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public String getName() {
@@ -83,7 +77,6 @@ public class Bag {
     public String toString() {
         return "Bag{" +
                 "id=" + id +
-                ", bagNumber=" + bagNumber +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 '}';

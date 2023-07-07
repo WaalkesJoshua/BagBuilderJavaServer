@@ -32,7 +32,7 @@ public class DiscsController {
         //pass id into request to disc api and return disc
         Optional<Disc> foundDisc = discRepository.findById(id);
         if (foundDisc.isEmpty()) {
-            throw new DiscNotFoundException("Id: " + id);
+            throw new DiscNotFoundException("No disc found for Id: " + id);
         }
         return foundDisc.get();
     }
