@@ -1,5 +1,6 @@
 package com.Bagbuilder.RestAPI.Controllers;
 
+import com.Bagbuilder.RestAPI.Exceptions.EmailAlreadyExistsException;
 import com.Bagbuilder.RestAPI.Exceptions.UserNotFoundException;
 import com.Bagbuilder.RestAPI.Models.Bag;
 import com.Bagbuilder.RestAPI.Models.User;
@@ -26,6 +27,10 @@ public class UsersController {
     @Autowired
     private UserRepository userRepository;
 
+    public boolean isEmailExists (String email) {
+        return userRepository.exitsByEmail(email);
+    }
+
     @Autowired
     private BagRepository bagRepository;
 
@@ -51,7 +56,20 @@ public class UsersController {
 
     @PostMapping(path="/add")
     public User addUser(@RequestBody User user) {
-        return userRepository.saveAndFlush(user);
+        if(isEmailExists(user.getEmail())) {
+            throw new EmailAlreadyExistsException(user.getEmail()" already exists");
+        }
+
+        String bagName = "My First Bag";
+        String bagDescription = "This is your first bag, let's add some discs!";
+        Bag firstBag = new Bag(bagName, bagDescription);
+        firstBag.setUser(user);
+        bagRepository.saveAndFlush(firstBag);
+        List<Bag> userBags = user.getBags();
+        userBags.add(firstBag);
+        user.setBags(userBags);
+        User savedUser = userRepository.saveAndFlush(user);
+
     }
 
     @RequestMapping(method={RequestMethod.DELETE}, path="/delete/{id}")

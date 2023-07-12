@@ -9,5 +9,9 @@ import java.util.List;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
+
     List<User> findAll(Sort sort);
+
+    boolean exitsByEmail(String email);
+
 }

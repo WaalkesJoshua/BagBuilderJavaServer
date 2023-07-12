@@ -26,8 +26,7 @@ public class Bag {
     private List<Disc> discs;
 
 
-    public Bag(Long id, String name, String description) {
-        this.id = id;
+    public Bag( String name, String description) {
         this.name = name;
         this.description = description;
     }
