@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,7 +29,7 @@ public class UsersController {
     private UserRepository userRepository;
 
     public boolean isEmailExists (String email) {
-        return userRepository.exitsByEmail(email);
+        return userRepository.existsByEmail(email);
     }
 
     @Autowired
@@ -57,19 +58,19 @@ public class UsersController {
     @PostMapping(path="/add")
     public User addUser(@RequestBody User user) {
         if(isEmailExists(user.getEmail())) {
-            throw new EmailAlreadyExistsException(user.getEmail()" already exists");
+            throw new EmailAlreadyExistsException(user.getEmail() + " already exists");
         }
 
+        userRepository.saveAndFlush(user);
         String bagName = "My First Bag";
         String bagDescription = "This is your first bag, let's add some discs!";
         Bag firstBag = new Bag(bagName, bagDescription);
         firstBag.setUser(user);
         bagRepository.saveAndFlush(firstBag);
-        List<Bag> userBags = user.getBags();
+        List<Bag> userBags = new ArrayList<>();
         userBags.add(firstBag);
         user.setBags(userBags);
-        User savedUser = userRepository.saveAndFlush(user);
-
+        return userRepository.saveAndFlush(user);
     }
 
     @RequestMapping(method={RequestMethod.DELETE}, path="/delete/{id}")

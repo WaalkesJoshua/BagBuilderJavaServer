@@ -18,7 +18,7 @@ public class User {
     private String lastName;
     private String experience; //should be Beginner, Intermediate, or Advanced only
     private String email;  //should be unique
-    private String hashedPass;  //should be unique
+    private String hashedPass;
 
     @OneToMany(mappedBy = "user")
     @OrderBy("id ASC")
