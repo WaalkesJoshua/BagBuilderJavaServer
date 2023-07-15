@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(path="/users")
@@ -79,6 +80,14 @@ public class UsersController {
         if(foundUser.isEmpty()) {
             throw new UserNotFoundException("No user found for id: " + id);
         }
+        List<Long> bagIds = bagRepository.getAllBagIdByUserId(id);
+        System.out.println("BAG IDS: " + bagIds);
+        if(bagIds.size() > 0) {
+            bagRepository.deleteDiscRelationsForBagIds(bagIds);
+        }
+        bagRepository.deleteAllBagsByUserId(id);
+        //need to delete all user bags as well.
+        //need to delete all relations for each bag?? maybe spring handles this??
         userRepository.deleteById(id);
         return "User with Id: " + id + " successfully deleted";
     }
