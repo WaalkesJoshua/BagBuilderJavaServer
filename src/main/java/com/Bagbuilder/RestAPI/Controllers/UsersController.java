@@ -49,11 +49,11 @@ public class UsersController {
 
     @GetMapping(path="/{id}")
     public Optional<User> getUserById(@PathVariable Long id) {
-      Optional<User> foundUser = userRepository.findById(id);
-      if (foundUser.isEmpty()) {
-          throw new UserNotFoundException("No user found for id: " + id);
-      }
-      return foundUser;
+        Optional<User> foundUser = userRepository.findById(id);
+        if (foundUser.isEmpty()) {
+            throw new UserNotFoundException("No user found for id: " + id);
+        }
+        return foundUser;
     }
 
     @PostMapping(path="/add")
@@ -61,7 +61,6 @@ public class UsersController {
         if(isEmailExists(user.getEmail())) {
             throw new EmailAlreadyExistsException(user.getEmail() + " already exists");
         }
-
         userRepository.saveAndFlush(user);
         String bagName = "My First Bag";
         String bagDescription = "This is your first bag, let's add some discs!";
@@ -81,13 +80,10 @@ public class UsersController {
             throw new UserNotFoundException("No user found for id: " + id);
         }
         List<Long> bagIds = bagRepository.getAllBagIdByUserId(id);
-        System.out.println("BAG IDS: " + bagIds);
         if(bagIds.size() > 0) {
             bagRepository.deleteDiscRelationsForBagIds(bagIds);
         }
         bagRepository.deleteAllBagsByUserId(id);
-        //need to delete all user bags as well.
-        //need to delete all relations for each bag?? maybe spring handles this??
         userRepository.deleteById(id);
         return "User with Id: " + id + " successfully deleted";
     }
@@ -99,7 +95,7 @@ public class UsersController {
         if (foundUser.isEmpty()) {
             throw new UserNotFoundException("No user found for id: " + user.getId());
         }
-      userRepository.saveAndFlush(user);
-      return "User with Id: " + user.getId() + " successfully updated";
+        userRepository.saveAndFlush(user);
+        return "User with Id: " + user.getId() + " successfully updated";
     }
 }
