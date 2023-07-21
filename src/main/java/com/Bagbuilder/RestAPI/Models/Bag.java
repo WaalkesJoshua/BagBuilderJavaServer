@@ -1,21 +1,32 @@
 package com.Bagbuilder.RestAPI.Models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity(name="bags")
+@SequenceGenerator(name = "bags_seq", initialValue = 50, allocationSize = 1)
 public class Bag {
+    public Bag () {}
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "bags_seq")
     private Long id;
-    private Long userId;
-    private int bagNumber;
     private String name;
     private String description;
-    private List<Disc> discs = new ArrayList<>();
+
+    @ManyToOne
+    @JsonIgnore
+    private User user;
+
+    @ManyToMany
+    @OrderBy("speed ASC")
+    private List<Disc> discs;
 
 
-    public Bag(Long id, Long userId, int bagNumber, String name, String description) {
-        this.id = id;
-        this.userId = userId;
-        this.bagNumber = bagNumber;
+    public Bag( String name, String description) {
         this.name = name;
         this.description = description;
     }
@@ -28,20 +39,12 @@ public class Bag {
         this.id = id;
     }
 
-    public Long getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public int getBagNumber() {
-        return bagNumber;
-    }
-
-    public void setBagNumber(int bagNumber) {
-        this.bagNumber = bagNumber;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public String getName() {
@@ -73,7 +76,6 @@ public class Bag {
     public String toString() {
         return "Bag{" +
                 "id=" + id +
-                ", bagNumber=" + bagNumber +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 '}';

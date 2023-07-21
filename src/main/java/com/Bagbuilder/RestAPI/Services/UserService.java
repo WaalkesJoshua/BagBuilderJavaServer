@@ -10,13 +10,13 @@ import java.util.List;
 public class UserService {
 
     public static List<User> users = new ArrayList<>();
-    private static Long userCount = 0L;
+    private static Long userCount = 1L;
 
-    static {
-        users.add(new User(userCount++, "Josh", "Waalkes", "Intermediate"));
-        users.add(new User(userCount++, "Jared", "Leak", "Intermediate"));
-        users.add(new User(userCount++, "Joe", "Talbott", "Beginner"));
-    }
+//    static {
+//        users.add(new User(userCount++, "Josh", "Waalkes", "Intermediate"));
+//        users.add(new User(userCount++, "Jared", "Leak", "Intermediate"));
+//        users.add(new User(userCount++, "Joe", "Talbott", "Beginner"));
+//    }
 
     public List<User> findAll() {
         return users;

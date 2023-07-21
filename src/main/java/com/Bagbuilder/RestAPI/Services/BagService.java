@@ -2,11 +2,11 @@ package com.Bagbuilder.RestAPI.Services;
 
 import com.Bagbuilder.RestAPI.Models.Bag;
 import com.Bagbuilder.RestAPI.Models.Disc;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Component
 public class BagService {
@@ -15,12 +15,12 @@ public class BagService {
     private static Long bagCount = 0L;
 
 
-    static {
-        bags.add(new Bag(++bagCount, 1L,1, "CasualBag", "For casual rounds"));
-        bags.add(new Bag(++bagCount, 1L, 2, "TourneyBag", "For tournies"));
-        bags.add(new Bag(++bagCount, 2L, 1, "MyFirstBag", "made my first bag"));
-        bags.add(new Bag(++bagCount, 3L, 1, "BestBag", "For slaying it"));
-    }
+//    static {
+//        bags.add(new Bag(++bagCount, 1L,1, "CasualBag", "For casual rounds"));
+//        bags.add(new Bag(++bagCount, 1L, 2, "TourneyBag", "For tournies"));
+//        bags.add(new Bag(++bagCount, 2L, 1, "MyFirstBag", "made my first bag"));
+//        bags.add(new Bag(++bagCount, 3L, 1, "BestBag", "For slaying it"));
+//    }
 
     ////There is no real use case for this///
 //    public List<Bag> getAllBags() {
@@ -30,30 +30,30 @@ public class BagService {
     public Bag getBagById(Long id) {
         Bag foundBag = null;
         for (Bag bag : bags) {
-            if (bag.getId() == id) {
+            if (Objects.equals(bag.getId(), id)) {
                 foundBag = bag;
             }
         }
         return foundBag;
     }
 
-    public List<Bag> getAllUserBags(Long userId) {
-        List<Bag> userBags = new ArrayList<>();
-        for (Bag bag : bags) {
-            if (bag.getUserId() == userId) {
-                userBags.add(bag);
-            }
-        }
-        return userBags;
-    }
-
-    public Bag createNewBag(Bag bag) {
-        int bagNumber = getAllUserBags(bag.getUserId()).size() + 1;
-        bag.setId(++bagCount);
-        bag.setBagNumber(bagNumber);
-        bags.add(bag);
-        return bag;
-    }
+//    public List<Bag> getAllUserBags(Long userId) {
+//        List<Bag> userBags = new ArrayList<>();
+//        for (Bag bag : bags) {
+//            if (bag.getUserId() == userId) {
+//                userBags.add(bag);
+//            }
+//        }
+//        return userBags;
+//    }
+//
+//    public Bag createNewBag(Bag bag) {
+//        int bagNumber = getAllUserBags(bag.getUserId()).size() + 1;
+//        bag.setId(++bagCount);
+//        bag.setBagNumber(bagNumber);
+//        bags.add(bag);
+//        return bag;
+//    }
 
     //method to delete bag
     public Bag deleteBagById(Long id) {
@@ -75,28 +75,18 @@ public class BagService {
         return currentBag.getDiscs();
     }
 
-    public Disc addDiscToBagById(Disc disc, Long bagId) {
+    public void addDiscToBagById(Long bagId, Disc disc) {
         Bag currentBag = getBagById(bagId);
-        if (currentBag == null ) {
-            return null;
-        }
         List<Disc> currentDiscs = getDiscsFromBag(bagId);
         currentDiscs.add(disc);
         currentBag.setDiscs(currentDiscs);
-
-        return disc;
     }
 
-    public Disc removeDiscfromBagById(Disc disc, Long bagId) {
+    public void removeDiscfromBagById(Long bagId, Disc disc) {
         Bag currentBag = getBagById(bagId);
-        if (currentBag == null ) {
-            return null;
-        }
         List<Disc> currentDiscs = getDiscsFromBag(bagId);
         currentDiscs.remove(disc);
         currentBag.setDiscs(currentDiscs);
-
-        return disc;
     }
 
     public Bag modifyBag(Bag bag) {
@@ -104,9 +94,8 @@ public class BagService {
         if (updatedBag == null) {
             return null;
         }
-        updatedBag.setBagNumber(bag.getBagNumber());
         updatedBag.setName(bag.getName());
-        updatedBag.setDescription(bag.getName());
+        updatedBag.setDescription(bag.getDescription());
 
         return updatedBag;
     }

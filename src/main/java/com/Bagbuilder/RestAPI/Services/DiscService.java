@@ -13,14 +13,14 @@ public class DiscService {
     private static List<Disc> discs = new ArrayList<>();
     private static int discCount = 0;
 
-    static {
-        discs.add(new Disc (++discCount, "Firebird", "Driver",
-                "Discraft", "Overstable", 9));
-        discs.add(new Disc (++discCount, "Destroyer", "Driver",
-                "Innova", "Overstable", 12));
-        discs.add(new Disc (++discCount, "P2", "Putter",
-                "Discmania", "Stable", 2));
-    }
+//    static {
+//        discs.add(new Disc (++discCount, "Firebird", "Driver",
+//                "Discraft", "Overstable", 9));
+//        discs.add(new Disc (++discCount, "Destroyer", "Driver",
+//                "Innova", "Overstable", 12));
+//        discs.add(new Disc (++discCount, "P2", "Putter",
+//                "Discmania", "Stable", 2));
+//    }
 
     public List<Disc> findAll() {
         return discs;
