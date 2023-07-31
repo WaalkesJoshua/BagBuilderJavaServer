@@ -31,14 +31,7 @@ public class BagsController {
     @Autowired
     private DiscRepository discRepository;
 
-//    @Autowired
-//    private BagService bagService;
-//
-//    @Autowired
-//    private DiscService discService;
-//
-//    @Autowired
-//    private UserService userService;
+    @Autowired
 
     public BagsController(BagRepository bagRepository, UserRepository userRepository, DiscRepository discRepository) {
         this.bagRepository = bagRepository;
