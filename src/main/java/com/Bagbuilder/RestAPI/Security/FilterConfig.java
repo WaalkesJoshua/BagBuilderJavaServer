@@ -13,7 +13,6 @@ public class FilterConfig {
     public FilterConfig(@Value("${app.apikey}") String apiKey) {
         this.apiKey = apiKey;
     }
-    //I got this error: Could not resolve placeholder 'app.apiKey' in value "${app.apiKey}"
 
     @Bean
     public FilterRegistrationBean<AuthFilter> myPreFilter() {

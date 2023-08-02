@@ -23,8 +23,7 @@ public class AuthFilter implements Filter {
             throws IOException, ServletException {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         String key = httpRequest.getHeader("Authorization");
-        System.out.println(key);
-        if (!key.equals(apiKey)) {
+        if (key == null || !key.equals(apiKey)) {
             HttpServletResponse httpResponse = (HttpServletResponse) response;
             httpResponse.sendError(HttpServletResponse.SC_FORBIDDEN, "Bad api key");
             return;

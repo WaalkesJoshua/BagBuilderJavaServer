@@ -73,7 +73,7 @@ public class UsersController {
         return userRepository.saveAndFlush(user);
     }
 
-    @RequestMapping(method={RequestMethod.DELETE}, path="/delete/{id}")
+    @RequestMapping(method=RequestMethod.DELETE, path="/delete/{id}")
     public String deleteUserById(@PathVariable Long id) {
         Optional<User> foundUser = userRepository.findById(id);
         if(foundUser.isEmpty()) {
@@ -97,5 +97,14 @@ public class UsersController {
         }
         userRepository.saveAndFlush(user);
         return "User with Id: " + user.getId() + " successfully updated";
+    }
+
+    @GetMapping(path="/login/{email}")
+    public Optional<User> getUserByEmail(@PathVariable String email) {
+        Optional<User> foundUser = userRepository.getByEmail(email);
+        if (foundUser.isEmpty()) {
+            throw new UserNotFoundException("No user found for email: " + email);
+        }
+        return foundUser;
     }
 }
