@@ -2,7 +2,6 @@ package com.Bagbuilder.RestAPI.Models;
 
 import jakarta.persistence.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity(name="bb_users")
@@ -19,18 +18,21 @@ public class User {
     private String experience; //should be Beginner, Intermediate, or Advanced only
     private String email;  //should be unique
     private String hashedPass;
+    private String salt;
 
     @OneToMany(mappedBy = "user")
     @OrderBy("id ASC")
     private List<Bag> bags;
 
-    public User(Long id, String firstName, String lastName, String experience, String email, String hashedPass) {
+    public User(Long id, String firstName, String lastName, String experience, String email, String hashedPass, String salt) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.experience = experience;
         this.email = email;
         this.hashedPass = hashedPass;
+        this.salt = salt;
+
     }
 
     public Long getId() {
@@ -89,6 +91,14 @@ public class User {
         this.hashedPass = hashedPass;
     }
 
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -99,4 +109,5 @@ public class User {
                 ", bag=" + bags +
                 '}';
     }
+
 }
